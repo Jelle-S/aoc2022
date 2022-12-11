@@ -6,13 +6,19 @@ class MonkeyInTheMiddle {
    */
   protected $monkeys = [];
 
+  protected int $product = 1;
+
+  protected int $boredomFactor;
+
   /**
    *
    * @param Monkey[] $monkeys
    */
-  public function __construct(array $monkeys) {
+  public function __construct(array $monkeys, $boredomFactor = 3) {
+    $this->boredomFactor = $boredomFactor;
     foreach ($monkeys as $monkey) {
       $this->monkeys[$monkey->getNumber()] = $monkey;
+      $this->product *= $monkey->getTestDivisible();
     }
   }
 
@@ -24,9 +30,20 @@ class MonkeyInTheMiddle {
 
   protected function playRound() {
     foreach ($this->monkeys as $monkey) {
-      while ($itemWithDestination = $monkey->inspectAndThrowItem()) {
-        $this->monkeys[$itemWithDestination['destination']]->addItem($itemWithDestination['item']);
+      $this->playTurn($monkey);
+    }
+  }
+
+  protected function playTurn(Monkey $monkey) {
+    while ($item = $monkey->getNextItem()) {
+      if ($this->boredomFactor !== 1) {
+        $item = floor($monkey->inspectItem($item) / $this->boredomFactor);
       }
+      else {
+        $item = floor($monkey->inspectItem($item % $this->product));
+      }
+      $destination = $monkey->getDestination($item);
+      $this->monkeys[$destination]->addItem($item);
     }
   }
 

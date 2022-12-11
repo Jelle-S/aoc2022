@@ -12,9 +12,6 @@ class Monkey {
   protected int $testDivisible;
   protected array $destinationMonkeys;
   protected int $numberOfInspectedItems = 0;
-  protected int $boredDivider = 3;
-
-
 
   public function __construct(int $number, string $operationType, $operationValue, array $items, int $testDivisible, array $destinationMonkeys) {
     $this->number = $number;
@@ -45,6 +42,14 @@ class Monkey {
     $this->items->enqueue($item);
   }
 
+  public function getNextItem() {
+    if (!$this->items->isEmpty()) {
+      return $this->items->dequeue();
+    }
+
+    return false;
+  }
+
   public function getNumber(): int {
     return $this->number;
   }
@@ -53,27 +58,11 @@ class Monkey {
     return $this->numberOfInspectedItems;
   }
 
-  public function getBoredDivider(): int {
-    return $this->boredDivider;
+  public function getTestDivisible(): int {
+    return $this->testDivisible;
   }
 
-  public function setBoredDivider(int $boredDivider): void {
-    $this->boredDivider = $boredDivider;
-  }
-
-  public function inspectAndThrowItem() {
-    if (!$this->items->isEmpty()) {
-      $item = $this->getBoredOfItem($this->inspectItem($this->items->dequeue()));
-      return [
-        'item' => $item,
-        'destination' => $this->getDestination($item),
-      ];
-    }
-
-    return false;
-  }
-
-  protected function inspectItem(int $item) {
+  public function inspectItem(int $item) {
     $this->numberOfInspectedItems++;
     $operationValue = $this->operationValue === 'old' ? $item : $this->operationValue;
     switch ($this->operationType) {
@@ -84,12 +73,7 @@ class Monkey {
     }
   }
 
-  protected function getBoredOfItem(int $item) {
-    return floor($item / $this->boredDivider);
-  }
-
-  protected function getDestination(int $item) {
+  public function getDestination(int $item) {
     return $this->destinationMonkeys[(int)(($item % $this->testDivisible) === 0)];
   }
-
 }
