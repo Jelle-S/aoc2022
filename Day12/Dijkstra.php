@@ -59,7 +59,7 @@ class Dijkstra {
         $neighbour = ['x' => $x, 'y' => $y, 'data' => $this->grid[$y][$x]];
         $distance = ($this->distanceCalculator)($item, $neighbour);
         if ($distance === false) {
-          // Neighbour is not reacable according to the distance calculator.
+          // Neighbour is not reachable according to the distance calculator.
           continue;
         }
         $visited[$y][$x] = true;
