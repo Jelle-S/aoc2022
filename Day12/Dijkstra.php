@@ -72,7 +72,7 @@ class Dijkstra {
           $neighbour['stepsToItem'] = array_merge($item['stepsToItem'], ['x' => $item['x'] - $neighbour['x'], 'y' => $item['y'] - $neighbour['y']]);
         }
 
-        if ($neighbour['x'] === $destination['x'] && $neighbour['y'] === $destination['y']) {
+        if ($this->matchesDestination($neighbour, $destination)) {
           return $neighbour;
         }
 
@@ -81,5 +81,12 @@ class Dijkstra {
     }
   }
 
+  protected function matchesDestination($item, $destination) {
+    if (is_callable($destination)) {
+      return $destination($item);
+    }
+
+    return $item['x'] === $destination['x'] && $item['y'] === $destination['y'];
+  }
 
 }
