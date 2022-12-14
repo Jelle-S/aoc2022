@@ -20,6 +20,10 @@ In all seriousness, we should be able to 'just' calculate it:
 
 These aren't actually traingular numbers (which would be 1+2+3+...), these are (1+3+5+7...) for which I don't know the name or formula yet).
 
+**EDIT2** 
+
+I'm still not sure what to call the numbers, but it has someting to do with [Gnomon](https://en.wikipedia.org/wiki/Gnomon_(figure)). And the formula is just to square it... Which also makes me think of something with bitwise operators or whatever... Not sure how it all fits...
+
 ### Caveats
 
 - Don't count line intersections twice
