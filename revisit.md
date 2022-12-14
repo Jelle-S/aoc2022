@@ -16,6 +16,10 @@ In all seriousness, we should be able to 'just' calculate it:
   - Come to think of it, a "pyramid"'s width and height are always the same, but still, in part one we are limited by a fixed width, and we'll have to add a square of everything below
 - The formula for a triangular number is `T(n) = (n*(n+1))/2`
 
+**EDIT**
+
+These aren't actually traingular numbers (which would be 1+2+3+...), these are (1+3+5+7...) for which I don't know the name or formula yet).
+
 ### Caveats
 
 - Don't count line intersections twice
