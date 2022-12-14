@@ -6,6 +6,8 @@ class Dijkstra {
 
   protected Closure $distanceCalculator;
 
+  protected Closure $neighbourCoordinatesCalculator;
+
   protected bool $storePath = false;
 
   protected bool $storeSteps = false;
@@ -13,6 +15,14 @@ class Dijkstra {
   public function __construct(array $grid, Closure $distanceCalculator) {
     $this->grid = $grid;
     $this->distanceCalculator = $distanceCalculator;
+    $this->neighbourCoordinatesCalculator = function ($item) {
+      return [
+        ['x' => $item['x'] - 1, 'y' => $item['y']],
+        ['x' => $item['x'] + 1, 'y' => $item['y']],
+        ['x' => $item['x'], 'y' => $item['y'] - 1],
+        ['x' => $item['x'], 'y' => $item['y'] + 1],
+      ];
+    };
   }
 
   public function shouldStorePath($storePath = true) {
@@ -21,6 +31,10 @@ class Dijkstra {
 
   public function shouldStoreSteps($storeSteps = true) {
     $this->storeSteps = $storeSteps;
+  }
+
+  public function setNeighbourCoordinatesCalculator(Closure $neighbourCoordinatesCalculator) {
+    $this->neighbourCoordinatesCalculator = $neighbourCoordinatesCalculator;
   }
 
   public function calculate($start, $destination) {
@@ -41,12 +55,7 @@ class Dijkstra {
       $queueItem = $queue->extract();
       $item = $queueItem['data'];
       $priority = $queueItem['priority'];
-      $neighboursCoordinates = [
-        ['x' => $item['x'] - 1, 'y' => $item['y']],
-        ['x' => $item['x'] + 1, 'y' => $item['y']],
-        ['x' => $item['x'], 'y' => $item['y'] - 1],
-        ['x' => $item['x'], 'y' => $item['y'] + 1],
-      ];
+      $neighboursCoordinates = ($this->neighbourCoordinatesCalculator)($item);
       foreach ($neighboursCoordinates as $neighboursCoordinate) {
         $x = $neighboursCoordinate['x'];
         $y = $neighboursCoordinate['y'];
@@ -79,6 +88,9 @@ class Dijkstra {
         $queue->insert($neighbour, -$neighbour['distance']);
       }
     }
+
+    // No path found.
+    return null;
   }
 
   protected function matchesDestination($item, $destination) {
