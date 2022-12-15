@@ -90,7 +90,7 @@ which equals `| 2 - 14 | + 1 = 13`.
 
 ```
 d = | 8 - 2 | + | 7 - 10 | = 9
-
+```
 ```
 - |8 - 2| - |7 - 10| + |7 - 17| + 8 = 9
 |8 - 2| + |7 - 10| - | 7 - 17| + 8 = 7
@@ -110,3 +110,13 @@ intersection. The other point shoudn't match either.
 d2 = | 8 - 7 | + | 7 - 17 | = 11
 ```
 -> Doesn't match either, as expected.
+
+# Puzzle 2
+
+It is a given in the puzzle that within those boundaries, there will only be one
+possible answer. So using the method above, we can calculate the intersection
+edges for every line, within those boundaries. Once we have a row with more than
+one intersection (gap in the middle) or a row with one intersection whose total
+number of elements is not equal to the boundry width (gap on the edge, we have
+found our row (y coordinate), and can determine our x coordinate based on the
+element that is missing.
